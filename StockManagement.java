@@ -1,57 +1,82 @@
-import java.util.ArrayList;
-import java.util.Scanner;// import Scanner class
+import java.util.Scanner;
+
+/**
+* Modify class Account to provide a method called debit that withdraws money
+* from an Account. Ensure that the debit amount does not exceed the Account’s
+* balance. If it does, the balance should be left unchanged and the method
+* should print a message indicating ―Debit amount exceeded account balance.
+* Modify class AccountTest to test method debit.
+*
+*/
 
 public class StockManagement {
 
+    private double balance;	// instance variable that stores the balance
 
-    //main driver method
-    public static void main(String[] args) {
-        int flag = 0;
-        Scanner sc = new Scanner(System.in);  //create scanner class
-        StockPortfo p = new StockPortfo();// create objet for stockportfo class
-/*
-using while loop for boolean condition check
- */
+    // constructor
+    public StockManagement( double initialBalance )
+    {
+        // validate that initialBalance is greater than 0.0;
+        // if it is not, balance is initialized to the default value 0.0
+        if ( initialBalance > 0.0 )
+            balance = initialBalance;
+    } // end Account constructor
 
-        while (flag == 0) {
-            System.out.println("Enter the details of Stock ");
-            StockPortfo.Stock s = new StockPortfo.Stock();
-            System.out.println("Enter Company Name:");
-            s.company = sc.nextLine();
-            System.out.println("Enter number of share:");
-            s.NoOfShare = sc.nextInt();
-            System.out.println("Enter Price of share:");
-            s.price = sc.nextDouble();
+    // credit (add) an amount to the account
+    public void credit( double amount )
+    {
+        balance = balance + amount;	// add amount to balance
+    } // end method credit
 
-            p.portf.add(s);
-            System.out.println("Do you want to add more Stocks? enter 0 for YES or 1 for NO!");
-            flag = sc.nextInt();
+    // debit (deduct) an amount to the account
+    public void debit( double debitAmount )
+    {
+
+
+        if (debitAmount > balance)
+        {
+            debitAmount = 0.0;
+            System.out.println( "Debit amount exceeded account balance." );
         }
+        balance = balance - debitAmount;
+    } // end method debit
 
-        // using for loop
-        for (int i = 0; i < p.portf.size(); i++) {
-            System.out.println(p.totalValue());
+    // return the account balance
+    public double getBalance()
+    {
+        return balance; // gives the value of balance to the calling method
+    } // end method getBalance
 
-        }
-    }
-}
 
-class StockPortfo {
+    public static void main(String[] args){
 
-    //creating an array list
-    ArrayList<Stock> portf = new ArrayList<>();
-    double totalValue = 0;
+        StockManagement account1 = new StockManagement( 10000 ); // create DebitAccount object
+        StockManagement account2 = new StockManagement( 500 ); // create DebitAccount object
 
-    static class Stock {
-        int NoOfShare;
-        String company;
-        double price;
-    }
+        // display initial balance of each object
+        System.out.printf( "account1 balance: $%.2f\n", account1.getBalance() );
+        System.out.printf( "account2 balance: $%.2f\n\n", account2.getBalance() );
 
-    public double totalValue() {
-        for (Stock stock : portf) {
-            totalValue += stock.price * stock.NoOfShare;
-        }
-        return totalValue;
-    }
-}
+        // create Scanner to obtain input from command window
+        Scanner input = new Scanner( System.in );
+        double withdrawAmount; // debit amount read from user
+
+        System.out.print( "Enter debit amount for account1: " ); // prompt
+        withdrawAmount = input.nextDouble(); // obtain user input
+        System.out.printf("\ndeducting %.2f from account1 balance\n\n", withdrawAmount );
+        account1.debit(withdrawAmount); // deduct from account1 balance
+
+        // display balances
+        System.out.printf( "account1 balance: $%.2f\n", account1.getBalance() );
+        System.out.printf( "account2 balance: $%.2f\n\n", account2.getBalance() );
+
+        System.out.print( "Enter withdraw amount for account2: "); // prompt
+        withdrawAmount = input.nextDouble(); // obtain user input
+        System.out.printf( "\ndeducting %.2f from account2 balance\n\n", withdrawAmount );
+        account2.debit( withdrawAmount ); //deduct from account2 balance
+
+        // display balances
+        System.out.printf( "account1 balance: $%.2f\n", account1.getBalance() );
+        System.out.printf( "account2 balance: $%.2f\n", account2.getBalance() );
+    } // end main
+} // end class DebitAccount Test
