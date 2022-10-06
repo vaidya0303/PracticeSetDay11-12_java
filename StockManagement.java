@@ -1,82 +1,58 @@
-import java.util.Scanner;
-
 /**
-* Modify class Account to provide a method called debit that withdraws money
-* from an Account. Ensure that the debit amount does not exceed the Account’s
-* balance. If it does, the balance should be left unchanged and the method
-* should print a message indicating ―Debit amount exceeded account balance.
-* Modify class AccountTest to test method debit.
-*
-*/
+* Write a Program DeckOfCards.java, to initialize deck of cards having suit
+* ("Clubs", "Diamonds", "Hearts", "Spades") & Rank ("2", "3", "4", "5", "6", "7", "8",
+* "9", "10", "Jack", "Queen", "King", "Ace"). Shuffle the cards using Random
+* method and then distribute 9 Cards to 4 Players and Print the Cards received by
+* the 4 Players using 2D Array...
+ *
+ */
+
+import java.util.Random;
 
 public class StockManagement {
 
-    private double balance;	// instance variable that stores the balance
+    static String[] Clubs = { "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10", "CJack", "CQueen", "CKing",
+            "CAce" };
 
-    // constructor
-    public StockManagement( double initialBalance )
-    {
-        // validate that initialBalance is greater than 0.0;
-        // if it is not, balance is initialized to the default value 0.0
-        if ( initialBalance > 0.0 )
-            balance = initialBalance;
-    } // end Account constructor
+    static String[] Diamonds = { "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "DJack", "DQueen", "DKing",
+            "DAce" };
 
-    // credit (add) an amount to the account
-    public void credit( double amount )
-    {
-        balance = balance + amount;	// add amount to balance
-    } // end method credit
+    static String[] Hearts = { "H2", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "H10", "HJack", "HQueen", "HKing",
+            "HAce" };
 
-    // debit (deduct) an amount to the account
-    public void debit( double debitAmount )
-    {
+    static String[] Spades = { "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "SJack", "SQueen", "SKing",
+            "SAce" };
 
+    static String[][] deck = { Clubs, Diamonds, Hearts, Spades };
+    static String[][] newDeck;
 
-        if (debitAmount > balance)
-        {
-            debitAmount = 0.0;
-            System.out.println( "Debit amount exceeded account balance." );
+    public static void distribute() {
+
+        newDeck = deck;
+        for (int i = 1; i < 5; i++) {
+            System.out.println("For Player" + i);
+            for (int j = 1; j < 10; j++) {
+                selectCard();
+            }
+
         }
-        balance = balance - debitAmount;
-    } // end method debit
+    }
 
-    // return the account balance
-    public double getBalance()
-    {
-        return balance; // gives the value of balance to the calling method
-    } // end method getBalance
+    public static void selectCard() {
+        Random c = new Random();
+        int suit = c.nextInt(4);
+        int rank = c.nextInt(13);
+        if (newDeck[suit][rank] == null) {
+            selectCard();
+        } else {
+            System.out.println(newDeck[suit][rank]);
+            newDeck[suit][rank] = null;
+        }
+    }
 
+    public static void main(String[] args) {
+        System.out.println("Welcome In Deck Of Cards Program");
+        distribute();
 
-    public static void main(String[] args){
-
-        StockManagement account1 = new StockManagement( 10000 ); // create DebitAccount object
-        StockManagement account2 = new StockManagement( 500 ); // create DebitAccount object
-
-        // display initial balance of each object
-        System.out.printf( "account1 balance: $%.2f\n", account1.getBalance() );
-        System.out.printf( "account2 balance: $%.2f\n\n", account2.getBalance() );
-
-        // create Scanner to obtain input from command window
-        Scanner input = new Scanner( System.in );
-        double withdrawAmount; // debit amount read from user
-
-        System.out.print( "Enter debit amount for account1: " ); // prompt
-        withdrawAmount = input.nextDouble(); // obtain user input
-        System.out.printf("\ndeducting %.2f from account1 balance\n\n", withdrawAmount );
-        account1.debit(withdrawAmount); // deduct from account1 balance
-
-        // display balances
-        System.out.printf( "account1 balance: $%.2f\n", account1.getBalance() );
-        System.out.printf( "account2 balance: $%.2f\n\n", account2.getBalance() );
-
-        System.out.print( "Enter withdraw amount for account2: "); // prompt
-        withdrawAmount = input.nextDouble(); // obtain user input
-        System.out.printf( "\ndeducting %.2f from account2 balance\n\n", withdrawAmount );
-        account2.debit( withdrawAmount ); //deduct from account2 balance
-
-        // display balances
-        System.out.printf( "account1 balance: $%.2f\n", account1.getBalance() );
-        System.out.printf( "account2 balance: $%.2f\n", account2.getBalance() );
-    } // end main
-} // end class DebitAccount Test
+    }
+}
